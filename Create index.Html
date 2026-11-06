@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANTU AI JARVIS</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:radial-gradient(circle,#10264a,#020610 75%);
+ color:white;
+ font-family:Arial,sans-serif;
+ text-align:center;
+ min-height:100vh;
+ padding:25px 15px;
+}
+h1{
+ color:#00eaff;
+ letter-spacing:3px;
+ text-shadow:0 0 15px #00eaff;
+ margin-top:35px;
+}
+.sub{color:#9bbbd0}
+.core{
+ width:190px;height:190px;
+ margin:45px auto 30px;
+ border:3px solid #00eaff;
+ border-radius:50%;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-size:75px;
+ box-shadow:0 0 20px #00eaff, inset 0 0 25px #00eaff;
+ animation:pulse 2s infinite;
+}
+@keyframes pulse{
+ 50%{box-shadow:0 0 45px #00eaff,inset 0 0 40px #00eaff}
+}
+button{
+ border:1px solid #00eaff;
+ background:#06243a;
+ color:white;
+ padding:15px 24px;
+ border-radius:30px;
+ margin:9px;
+ font-size:16px;
+}
+button:active{background:#007eaa}
+#answer{
+ margin:30px auto;
+ padding:18px;
+ max-width:500px;
+ min-height:65px;
+ border:1px solid #087a9b;
+ border-radius:15px;
+ color:#00eaff;
+ background:#061323;
+}
+input{
+ width:85%;
+ max-width:400px;
+ padding:14px;
+ border-radius:25px;
+ border:1px solid #00eaff;
+ background:#061323;
+ color:white;
+ font-size:16px;
+}
+footer{color:#718ba2;margin-top:40px}
+</style>
+</head>
+<body>
+
+<h1>ANTU AI JARVIS</h1>
+<p class="sub">MY PERSONAL AI ASSISTANT</p>
+
+<div class="core">🤖</div>
+
+<button onclick="listen()">🎤 Bolo Antu</button>
+<button onclick="speak('Namaste! Main Antu hoon.')">🔊 Hello</button>
+
+<div id="answer">Namaste! Main Antu hoon. Aapka swagat hai.</div>
+
+<input id="question" placeholder="Antu se kuch puchho...">
+<br>
+<button onclick="ask()">SEND ➤</button>
+
+<footer>ANTU SYSTEM • ONLINE</footer>
+
+<script>
+function speak(t){
+ document.getElementById("answer").innerText=t;
+ speechSynthesis.cancel();
+ let v=new SpeechSynthesisUtterance(t);
+ v.lang="hi-IN";
+ speechSynthesis.speak(v);
+}
+
+function ask(){
+ let q=document.getElementById("question").value.trim();
+ if(!q)return;
+ let a="Aapne kaha: "+q+". Main Antu hoon. Abhi mujhe asli AI service se connect karna baaki hai.";
+ speak(a);
+}
+
+function listen(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){
+  speak("Kripya Chrome browser use karein.");
+  return;
+ }
+ let r=new SR();
+ r.lang="hi-IN";
+ r.onresult=e=>{
+  document.getElementById("question").value=e.results[0][0].transcript;
+  ask();
+ };
+ r.onerror=()=>speak("Dobara boliye.");
+ r.start();
+}
+</script>
+
+</body>
+</html>
