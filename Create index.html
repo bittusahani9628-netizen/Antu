@@ -1,39 +1,89 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Antima AI</title>
+<title>Antu AI Jarvis</title>
 <style>
 body {
-  background: #080d1c;
+  margin: 0;
+  background: #050b18;
   color: white;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   text-align: center;
-  padding: 30px;
+  padding: 25px 15px;
 }
-h1 { color: #00e5ff; }
+h1 { color: #00eaff; margin-top: 35px; }
+.circle {
+  width: 170px;
+  height: 170px;
+  border: 4px solid #00eaff;
+  border-radius: 50%;
+  margin: 35px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 65px;
+  box-shadow: 0 0 30px #00eaff;
+}
 button {
-  background: #00c8ff;
+  background: #00d9ff;
+  color: #00111a;
   border: none;
-  padding: 16px 30px;
+  padding: 15px 24px;
   border-radius: 30px;
-  font-size: 18px;
+  font-size: 17px;
   margin: 10px;
+}
+#answer {
+  margin: 25px auto;
+  max-width: 500px;
+  line-height: 1.7;
+  color: #00eaff;
 }
 </style>
 </head>
 <body>
-<h1>❤️ ANTIMA AI ❤️</h1>
-<h3>आपकी अपनी AI Assistant</h3>
-<p id="reply">नमस्ते जानू! मैं Antima AI हूँ। ❤️</p>
-<button onclick="speak()">मुझसे बात करो 🎤</button>
+
+<h1>ANTU AI JARVIS</h1>
+<p>My Personal AI Assistant</p>
+
+<div class="circle">🤖</div>
+
+<button onclick="startListening()">🎤 Bolo Antu</button>
+<button onclick="speak('Hello! Main Antu hoon.')">🔊 Hello Antu</button>
+
+<div id="answer">Namaste! Main Antu hoon. Aapka swagat hai.</div>
+
 <script>
-function speak() {
- let msg = new SpeechSynthesisUtterance("जी जानू, बताइए क्या करना है?");
- msg.lang = "hi-IN";
- speechSynthesis.speak(msg);
+function speak(text) {
+  document.getElementById("answer").innerText = text;
+  let msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "hi-IN";
+  speechSynthesis.speak(msg);
+}
+
+function startListening() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    speak("Aapke browser mein voice recognition support nahi hai.");
+    return;
+  }
+
+  let recognition = new SR();
+  recognition.lang = "hi-IN";
+  recognition.onresult = function(event) {
+    let text = event.results[0][0].transcript;
+    document.getElementById("answer").innerText = "Aapne kaha: " + text;
+    speak("Aapne kaha " + text);
+  };
+  recognition.onerror = function() {
+    speak("Maaf kijiye, dobara boliye.");
+  };
+  recognition.start();
 }
 </script>
+
 </body>
 </html>
