@@ -1,71 +1,49 @@
-
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Antu My Personal AI Jarvis</title>
+<title>ANTU - My Jarvis</title>
 <style>
-body {
-  background: #050b18;
-  color: white;
-  font-family: Arial;
-  text-align: center;
-  padding: 25px;
-}
-h1 { color: #00eaff; }
-.robot {
-  font-size: 100px;
-  margin: 40px;
-}
-button {
-  background: #00d9ff;
-  padding: 15px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 18px;
-  margin: 10px;
-}
-#answer {
-  color: #00eaff;
-  margin-top: 30px;
-}
+body{background:black;color:#00e5ff;text-align:center;font-family:Arial;margin:0;padding:20px}
+h1{font-size:45px;text-shadow:0 0 20px #00e5ff}
+.circle{width:170px;height:170px;border:3px solid #00e5ff;border-radius:50%;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 0 40px #00e5ff}
+#chat{width:95%;max-width:500px;height:280px;background:#111;margin:auto;overflow-y:auto;padding:10px;border:1px solid #00e5ff;border-radius:10px;text-align:left}
+input{width:60%;padding:12px;border-radius:20px;border:none;outline:none}
+button{padding:12px 16px;border:none;border-radius:20px;background:#00e5ff;color:black;font-weight:bold;margin-top:10px}
 </style>
 </head>
 <body>
-
-<h1>ANTU MY PERSONAL AI JARVIS</h1>
-<p>Welcome to my personal assistant</p>
-
-<div class="robot">🤖</div>
-
-<button onclick="listen()">🎤 Bolo Antu</button>
-<button onclick="speak('Namaste! Main Antu hoon.')">Hello Antu</button>
-
-<div id="answer">Namaste! Main Antu hoon.</div>
+<h1>ANTU</h1>
+<p>My Personal AI Jarvis | Boss - Bittu Sahani</p>
+<div class="circle" onclick="speak('Hello Boss, Main Antu hu, aapka personal Jarvis')">🤖</div>
+<p>Circle pe click karo, Antu bolega</p>
+<div id="chat"><div>Antu: Hello Boss, Mai Antu hu. Bolo kya kaam hai?</div></div><br>
+<input id="input" placeholder="Boss, kuch bolo...">
+<button onclick="send()">Bhejo</button>
+<button onclick="listen()">🎤 Bolo</button>
 
 <script>
-function speak(text) {
-  document.getElementById("answer").innerText = text;
-  let voice = new SpeechSynthesisUtterance(text);
-  voice.lang = "hi-IN";
-  speechSynthesis.speak(voice);
+function speak(t){let s=new SpeechSynthesisUtterance(t);s.lang='hi-IN';speechSynthesis.speak(s);}
+function send(){
+let inp=document.getElementById('input');let v=inp.value;if(!v) return;
+let chat=document.getElementById('chat');
+chat.innerHTML+=`<div>Tum: ${v}</div>`;
+let r=getReply(v.toLowerCase());
+chat.innerHTML+=`<div>Antu: ${r}</div>`;
+speak(r);inp.value='';chat.scrollTop=chat.scrollHeight;
 }
-
-function listen() {
-  let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    speak("Chrome browser mein try kijiye.");
-    return;
-  }
-  let rec = new SR();
-  rec.lang = "hi-IN";
-  rec.onresult = function(e) {
-    speak("Aapne kaha: " + e.results[0][0].transcript);
-  };
-  rec.start();
+function getReply(q){
+if(q.includes('hello')||q.includes('hi')) return 'Hello Boss, Antu hazir hai.';
+if(q.includes('naam')) return 'Mera naam Antu hai, aapka personal Jarvis.';
+if(q.includes('kaun')) return 'Main Bittu Sahani ka personal AI hu.';
+if(q.includes('time')||q.includes('baj')) return 'Abhi time hai '+new Date().toLocaleTimeString();
+if(q.includes('bye')) return 'Bye Boss, Antu hamesha sath hai.';
+return 'Boss samajh gaya, thoda aur detail me batao.';
+}
+function listen(){
+let rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)();
+rec.lang='hi-IN';rec.onresult=function(e){document.getElementById('input').value=e.results[0][0].transcript;send();};rec.start();
 }
 </script>
-
 </body>
 </html>
