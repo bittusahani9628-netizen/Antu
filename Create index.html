@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antima AI</title>
+<style>
+body {
+  background: #080d1c;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 30px;
+}
+h1 { color: #00e5ff; }
+button {
+  background: #00c8ff;
+  border: none;
+  padding: 16px 30px;
+  border-radius: 30px;
+  font-size: 18px;
+  margin: 10px;
+}
+</style>
+</head>
+<body>
+<h1>❤️ ANTIMA AI ❤️</h1>
+<h3>आपकी अपनी AI Assistant</h3>
+<p id="reply">नमस्ते जानू! मैं Antima AI हूँ। ❤️</p>
+<button onclick="speak()">मुझसे बात करो 🎤</button>
+<script>
+function speak() {
+ let msg = new SpeechSynthesisUtterance("जी जानू, बताइए क्या करना है?");
+ msg.lang = "hi-IN";
+ speechSynthesis.speak(msg);
+}
+</script>
+</body>
+</html>
