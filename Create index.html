@@ -4,84 +4,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Antu AI Jarvis</title>
+<title>Antu My Personal AI Jarvis</title>
 <style>
 body {
-  margin: 0;
   background: #050b18;
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   text-align: center;
-  padding: 25px 15px;
+  padding: 25px;
 }
-h1 { color: #00eaff; margin-top: 35px; }
-.circle {
-  width: 170px;
-  height: 170px;
-  border: 4px solid #00eaff;
-  border-radius: 50%;
-  margin: 35px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 65px;
-  box-shadow: 0 0 30px #00eaff;
+h1 { color: #00eaff; }
+.robot {
+  font-size: 100px;
+  margin: 40px;
 }
 button {
   background: #00d9ff;
-  color: #00111a;
+  padding: 15px 25px;
   border: none;
-  padding: 15px 24px;
   border-radius: 30px;
-  font-size: 17px;
+  font-size: 18px;
   margin: 10px;
 }
 #answer {
-  margin: 25px auto;
-  max-width: 500px;
-  line-height: 1.7;
   color: #00eaff;
+  margin-top: 30px;
 }
 </style>
 </head>
 <body>
 
-<h1>ANTU AI JARVIS</h1>
-<p>My Personal AI Assistant</p>
+<h1>ANTU MY PERSONAL AI JARVIS</h1>
+<p>Welcome to my personal assistant</p>
 
-<div class="circle">🤖</div>
+<div class="robot">🤖</div>
 
-<button onclick="startListening()">🎤 Bolo Antu</button>
-<button onclick="speak('Hello! Main Antu hoon.')">🔊 Hello Antu</button>
+<button onclick="listen()">🎤 Bolo Antu</button>
+<button onclick="speak('Namaste! Main Antu hoon.')">Hello Antu</button>
 
-<div id="answer">Namaste! Main Antu hoon. Aapka swagat hai.</div>
+<div id="answer">Namaste! Main Antu hoon.</div>
 
 <script>
 function speak(text) {
   document.getElementById("answer").innerText = text;
-  let msg = new SpeechSynthesisUtterance(text);
-  msg.lang = "hi-IN";
-  speechSynthesis.speak(msg);
+  let voice = new SpeechSynthesisUtterance(text);
+  voice.lang = "hi-IN";
+  speechSynthesis.speak(voice);
 }
 
-function startListening() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function listen() {
+  let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    speak("Aapke browser mein voice recognition support nahi hai.");
+    speak("Chrome browser mein try kijiye.");
     return;
   }
-
-  let recognition = new SR();
-  recognition.lang = "hi-IN";
-  recognition.onresult = function(event) {
-    let text = event.results[0][0].transcript;
-    document.getElementById("answer").innerText = "Aapne kaha: " + text;
-    speak("Aapne kaha " + text);
+  let rec = new SR();
+  rec.lang = "hi-IN";
+  rec.onresult = function(e) {
+    speak("Aapne kaha: " + e.results[0][0].transcript);
   };
-  recognition.onerror = function() {
-    speak("Maaf kijiye, dobara boliye.");
-  };
-  recognition.start();
+  rec.start();
 }
 </script>
 
