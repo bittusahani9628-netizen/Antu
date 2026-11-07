@@ -147,3 +147,152 @@ function listen(){
 </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANTU AI Jarvis</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#080e1d;
+ color:white;
+ font-family:Arial,sans-serif;
+ text-align:center;
+ padding:25px 16px;
+}
+.container{
+ max-width:500px;
+ margin:25px auto;
+ padding:28px 20px;
+ background:#121d32;
+ border:1px solid #263b5c;
+ border-radius:25px;
+}
+h1{font-size:38px;color:#65d5ff}
+.sub{color:#a9bdd5}
+.circle{
+ width:145px;height:145px;
+ border-radius:50%;
+ margin:30px auto;
+ background:linear-gradient(135deg,#18bfff,#845cff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:45px;
+ box-shadow:0 0 35px #258bff66;
+}
+button{
+ width:100%;
+ padding:16px;
+ margin:9px 0;
+ border:0;
+ border-radius:13px;
+ font-size:17px;
+ font-weight:bold;
+ background:linear-gradient(90deg,#56cfff,#a17aff);
+ color:#071326;
+}
+input{
+ width:100%;
+ padding:16px;
+ border-radius:12px;
+ border:1px solid #456080;
+ background:#091326;
+ color:white;
+ font-size:16px;
+}
+#answer{
+ margin-top:20px;
+ padding:18px;
+ background:#091326;
+ border-radius:14px;
+ color:#bceaff;
+ min-height:65px;
+ line-height:1.6;
+}
+</style>
+</head>
+<body>
+<div class="container">
+ <h1>ANTU AI</h1>
+ <p class="sub">MY PERSONAL AI JARVIS</p>
+
+ <div class="circle">🤖</div>
+
+ <h2>Hello! I am ANTU</h2>
+ <p class="sub">Your Personal Voice Assistant</p>
+
+ <input id="question" placeholder="Mujhse kuch bhi pucho...">
+
+ <button onclick="ask()">ASK ANTU</button>
+ <button onclick="listen()">🎤 SPEAK TO ANTU</button>
+ <button onclick="speakAnswer()">🔊 SPEAK ANSWER</button>
+
+ <div id="answer">Namaste! Main ANTU hoon. Aapki kya madad karun?</div>
+</div>
+
+<script>
+let lastAnswer="Namaste! Main ANTU hoon.";
+
+function reply(q){
+ q=q.toLowerCase();
+ if(q.includes("hello")||q.includes("namaste"))
+ return "Namaste! Main ANTU hoon. Aap kaise hain?";
+ if(q.includes("naam"))
+ return "Mera naam ANTU AI Jarvis hai.";
+ if(q.includes("time")||q.includes("samay"))
+ return "Abhi samay hai "+new Date().toLocaleTimeString("hi-IN");
+ if(q.includes("date")||q.includes("tarikh"))
+ return "Aaj ki tarikh hai "+new Date().toLocaleDateString("hi-IN");
+ if(q.includes("kaise ho"))
+ return "Main bilkul theek hoon. Aap bataiye?";
+ if(q.includes("tum kya kar sakte"))
+ return "Main aapse voice aur text ke madhyam se baat kar sakta hoon.";
+ return "Aapne kaha: "+q+". Main ANTU hoon. Is sawal ka jawab dene ke liye mujhe online AI se connect karna hoga.";
+}
+
+function ask(){
+ let q=document.getElementById("question").value.trim();
+ if(!q)return;
+ lastAnswer=reply(q);
+ document.getElementById("answer").innerText=lastAnswer;
+ speakAnswer();
+}
+
+function speakAnswer(){
+ if(!("speechSynthesis" in window)){
+ alert("Aapke browser mein voice support nahi hai.");
+ return;
+ }
+ speechSynthesis.cancel();
+ let msg=new SpeechSynthesisUtterance(lastAnswer);
+ msg.lang="hi-IN";
+ msg.rate=0.95;
+ speechSynthesis.speak(msg);
+}
+
+function listen(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){
+ alert("Voice input ke liye Chrome browser use karein.");
+ return;
+ }
+ const recognition=new SR();
+ recognition.lang="hi-IN";
+ recognition.onresult=function(event){
+ let q=event.results[0][0].transcript;
+ document.getElementById("question").value=q;
+ ask();
+ };
+ recognition.onerror=function(){
+ document.getElementById("answer").innerText="Microphone permission check karein.";
+ };
+ recognition.start();
+}
+</script>
+</body>
+</html
